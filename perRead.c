@@ -62,7 +62,7 @@ void processRead(Config *config, bam1_t *b, char *seq, uint32_t sequenceStart, i
                     cigarOPOffset++;
                 }
 
-                direction = isCpG(seq, mappedPosition - sequenceStart, seqLen);
+                direction = isCHH(seq, mappedPosition - sequenceStart, seqLen);
                 if(direction) {
                     base = bam_seqi(readSeq, readPosition);  // Filtering by quality goes here
                     if(direction == 1 && (strand & 1) == 1) { // C & OT/CTOT
@@ -231,7 +231,7 @@ void perRead_usage() {
 " - read name\n"
 " - chromosome\n"
 " - position\n"
-" - CpG methylation (%%)\n"
+" - CHH methylation (%%)\n"
 " - number of informative bases\n"
 "\n"
 "Arguments:\n"
@@ -280,7 +280,7 @@ int perRead_main(int argc, char *argv[]) {
     char c;
 
     //Defaults
-    config.keepCpG = 1; config.keepCHG = 0; config.keepCHH = 0;
+    config.keepCpG = 0; config.keepCHG = 0; config.keepCHH = 1;
     config.minMapq = 10; config.minPhred = 5; config.keepDupes = 0;
     config.keepSingleton = 0, config.keepDiscordant = 0;
     config.ignoreNH = 0;
