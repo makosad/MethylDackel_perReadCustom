@@ -61,8 +61,15 @@ void processRead(Config *config, bam1_t *b, char *seq, uint32_t sequenceStart, i
                     readPosition++;
                     cigarOPOffset++;
                 }
-
-                direction = isCpG(seq, mappedPosition - sequenceStart, seqLen);
+                
+                if(config->keepCpG) {
+                    direction = isCpG(seq, mappedPosition - sequenceStart, seqLen);
+                } else if(config->keepCHG) {
+                    direction = isCHG(seq, mappedPosition - sequenceStart, seqLen);
+                } else if(config->keepCHH) {
+                    direction = isCHH(seq, mappedPosition - sequenceStart, seqLen);
+                }
+                
                 if(direction) {
                     base = bam_seqi(readSeq, readPosition);  // Filtering by quality goes here
                     if(direction == 1 && (strand & 1) == 1) { // C & OT/CTOT
@@ -244,6 +251,9 @@ void perRead_usage() {
 "            be >0.\n"
 " -r STR     Region string in which to extract methylation\n"
 " -l FILE    A BED file listing regions for inclusion.\n"
+" --noCpG    Do not output CpG context methylation metrics\n"
+" --CHG      Output CHG context methylation metrics\n"
+" --CHH      Output CHH context methylation metrics\n"
 " --keepStrand  If a BED file is specified, then this option will cause the\n"
 "            strand column (column 6) to be utilized, if present. Thus, if\n"
 "            a region has a '+' in this column, then only metrics from the\n"
@@ -297,6 +307,9 @@ int perRead_main(int argc, char *argv[]) {
     static struct option lopts[] = {
         {"help",    0, NULL, 'h'},
         {"version", 0, NULL, 'v'},
+        {"noCpG",        0, NULL,   1},
+        {"CHG",          0, NULL,   2},
+        {"CHH",          0, NULL,   3},
         {"chunkSize",    1, NULL,  19},
         {"keepStrand",   0, NULL,  20},
         {"ignoreFlags",  1, NULL, 'F'},
@@ -337,6 +350,15 @@ int perRead_main(int argc, char *argv[]) {
             break;
         case 'R':
             config.requireFlags = atoi(optarg);
+            break;
+        case 1:
+            config.keepCpG = 0;
+            break;
+        case 2:
+            config.keepCHG = 1;
+            break;
+        case 3:
+            config.keepCHH = 1;
             break;
         case 19:
             config.chunkSize = strtoul(optarg, NULL, 10);
