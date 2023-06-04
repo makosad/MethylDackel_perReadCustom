@@ -233,12 +233,12 @@ void perRead_usage() {
     fprintf(stderr, "\nUsage: MethylDackel perRead [OPTIONS] <ref.fa> <input>\n");
     fprintf(stderr,
 "\n"
-"This program will compute the average CpG methylation level of a given read.\n"
+"This program will compute the average CpG/CHG/CHH methylation level of a given read.\n"
 "The output is a tab-separated file with the following columns:\n"
 " - read name\n"
 " - chromosome\n"
 " - position\n"
-" - CpG methylation (%%)\n"
+" - CpG/CHG/CHH methylation (%%)\n"
 " - number of informative bases\n"
 "\n"
 "Arguments:\n"
