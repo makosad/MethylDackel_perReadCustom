@@ -28,8 +28,6 @@ void usage_main() {
 "Commands:\n"
 "    mbias    Determine the position-dependent methylation bias in a dataset,\n"
 "             producing diagnostic SVG images.\n"
-"    extract  Extract methylation metrics from an alignment file in BAM/CRAM\n"
-"             format.\n"
 "    mergeContext   Combine single Cytosine metrics from 'MethylDackel extract' into\n"
 "             per-CpG/CHG metrics.\n"
 "    perRead  Generate a per-read methylation summary.\n"
@@ -46,8 +44,8 @@ int main(int argc, char *argv[]) {
     } else if(strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--version") == 0) {
         print_version();
         return 0;
-    } else if(strcmp(argv[1], "extract") == 0) {
-        return extract_main(argc-1, argv+1);
+    // } else if(strcmp(argv[1], "extract") == 0) {
+    //     return extract_main(argc-1, argv+1);
     } else if(strcmp(argv[1], "mbias") == 0) {
         return mbias_main(argc-1, argv+1);
     } else if(strcmp(argv[1], "mergeContext") == 0) {
