@@ -14,14 +14,22 @@ Compilation
 
 Compilation and installation can be performed via:
 
-    git clone https://github.com/dpryan79/MethylDackel.git
-    cd MethylDackel
-    make LIBBIGWIG="/some/path/to/libBigWig.a"
-    make install prefix=/some/installation/path
-
-If the linker has issues finding the htslib headers and library, then specify them using `CFLAGS` and `LIBS`:
-
-    make install CFLAGS="-O3 -Wall -I/some/path/include " LIBS="-L/some/path/lib" prefix=/some/installation/path LIBBIGWIG="/some/path/to/libBigWig.a"
+    mamba create --name MetDackelTest methyldackel -c bioconda
+    mamba activate MetDackelTest
+    conda uninstall methyldackel --force
+    git clone git@github.com:makosad/MethylDackel_perReadCustom.git
+    git clone https://github.com/brentp/bigwig.git
+    git clone https://github.com/dpryan79/libBigWig.git
+    in libBigWig directory
+    make install prefix=/condaPath/envs/MetDackelTest/bin
+    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/condaPath/envs/MetDackelTest/lib"
+    cp /libBigWigGithubPath/libBigWig/libBigWig.a /condaPath/envs/MetDackelTest/lib/
+    cp /BigWigGithubPath/bigwig/bigWig.h /condaPath/envs/MetDackelTest/include/
+    cp /BigWigGithubPath/bigwig/bigwig/io.h /condaPath/envs/MetDackelTest/include/
+    cp /BigWigGithubPath/bigwig/bwValues.h /condaPath/envs/MetDackelTest/include/
+    in MethylDackel_perReadCustom dir: CustomMethylDackelGithubPath
+    make install CFLAGS="-O3 -Wall -I/condaPath/envs/MetDackelTest/include" LIBS="-L/condaPath/envs/MetDackelTest/lib" prefix="/condaPath/envs/MetDackelTest/bin" LIBBIGWIG="/condaPath/envs/MetDackelTest/lib/libBigWig.a"
+    
 
 License
 =======
